@@ -18,17 +18,17 @@ class NotesListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_notes_list, container, false)
-    }
+        val view = layoutInflater.inflate(R.layout.fragment_notes_list, container, false)
 
-    companion object {
-        fun newInstance() = NotesListFragment()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        // adding new note from another fragment
+        if (arguments != null) {
+            val titleNote = arguments?.getString("title")
+            val textNote = arguments?.getString("text")
+            notesDatabase.addNote(Note(titleNote, textNote))
+        }
 
         initDynamicList(view)
+        return view
     }
 
     private fun initDynamicList(view: View) {
@@ -37,10 +37,15 @@ class NotesListFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = customAdapter
 
-        view.findViewById<View>(R.id.fab).setOnClickListener {
-            notesDatabase.addNote(Note("title", "text"))
+        // FAB response: opening new fragment to create new note
+        view.findViewById<View>(R.id.add_fab).setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_fragment_container, NewNoteFragment.newInstance())
+                .addToBackStack("")
+                .commit()
             recyclerView.scrollToPosition(0)
-            customAdapter.notifyItemInserted(0)
         }
     }
 }
