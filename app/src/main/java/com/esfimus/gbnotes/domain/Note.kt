@@ -6,10 +6,10 @@ import java.time.LocalDateTime
 
 class Note(private var title: String?, private var text: String?) : Parcelable {
 
-    private var dateAndTime: String
+    private var date: String
 
     init {
-        dateAndTime = currentDateAndTime()
+        date = currentDateAndTime()
     }
 
     private fun currentDateAndTime() = LocalDateTime.now().toString()
@@ -18,29 +18,29 @@ class Note(private var title: String?, private var text: String?) : Parcelable {
 
     fun getText() = text
 
-    fun getDateAndTime() = dateAndTime
+    fun getDate() = date
 
     fun setTitle(newTitle: String) {
         title = newTitle
-        dateAndTime = currentDateAndTime()
+        date = currentDateAndTime()
     }
 
     fun setText(newText: String) {
         text = newText
-        dateAndTime = currentDateAndTime()
+        date = currentDateAndTime()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
         parcel.writeString(text)
-        parcel.writeString(dateAndTime)
+        parcel.writeString(date)
     }
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString()
     ) {
-        dateAndTime = parcel.readString().toString()
+        date = parcel.readString().toString()
     }
 
     override fun describeContents(): Int {

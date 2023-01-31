@@ -35,7 +35,7 @@ class RecyclerAdapter(private val itemsList: MutableList<Note>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.titleView.text = itemsList[position].getTitle()
-        holder.timeView.text = itemsList[position].getDateAndTime()
+        holder.timeView.text = itemsList[position].getDate()
     }
 
     fun setClickListener(listener: OnListItemClick) {

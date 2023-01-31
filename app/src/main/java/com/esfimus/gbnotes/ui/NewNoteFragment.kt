@@ -25,8 +25,8 @@ class NewNoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val titleView = view.findViewById<TextView>(R.id.title_edit)
-        val textView = view.findViewById<TextView>(R.id.text_edit)
+        val titleView = view.findViewById<TextView>(R.id.title_new)
+        val textView = view.findViewById<TextView>(R.id.text_new)
 
         // FAB response: creating new note
         view.findViewById<View>(R.id.save_fab).setOnClickListener {

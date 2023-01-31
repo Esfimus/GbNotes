@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbnotes.R
@@ -45,7 +46,8 @@ class ListNotesFragment : Fragment() {
                 .supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_fragment_container, NewNoteFragment.newInstance())
-                .addToBackStack("")
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit()
             recyclerView.scrollToPosition(0)
         }
@@ -57,7 +59,8 @@ class ListNotesFragment : Fragment() {
                     .supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.main_fragment_container, SelectedNoteFragment.newInstance(notesDatabase.getNote(position)))
-                    .addToBackStack("")
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit()
             }
         })
