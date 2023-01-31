@@ -11,4 +11,12 @@ class NotesDatabase {
     }
 
     fun getNotesList() = notesList
+
+    fun getNote(index: Int): Note? {
+        return if (index in 0..notesList.size) {
+            notesList[index]
+        } else {
+            null
+        }
+    }
 }

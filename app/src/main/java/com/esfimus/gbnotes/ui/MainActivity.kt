@@ -7,7 +7,7 @@ import com.esfimus.gbnotes.domain.Communicator
 
 class MainActivity : AppCompatActivity(), Communicator {
 
-    private val notesListFragment = NotesListFragment()
+    private val listNotesFragment = ListNotesFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), Communicator {
     private fun initNotesList() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.main_fragment_container, notesListFragment)
+            .replace(R.id.main_fragment_container, listNotesFragment)
             .commit()
     }
 
@@ -27,6 +27,6 @@ class MainActivity : AppCompatActivity(), Communicator {
         val bundle = Bundle()
         bundle.putString("title", title)
         bundle.putString("text", text)
-        notesListFragment.arguments = bundle
+        listNotesFragment.arguments = bundle
     }
 }

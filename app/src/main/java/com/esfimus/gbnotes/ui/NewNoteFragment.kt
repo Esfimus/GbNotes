@@ -15,7 +15,7 @@ class NewNoteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_new_note, container, false)
+        return inflater.inflate(R.layout.fragment_note_new, container, false)
     }
 
     companion object {

@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.data.NotesDatabase
 import com.esfimus.gbnotes.domain.Note
+import com.esfimus.gbnotes.domain.OnListItemClick
 import com.esfimus.gbnotes.domain.RecyclerAdapter
 
-class NotesListFragment : Fragment() {
+class ListNotesFragment : Fragment() {
 
     private val notesDatabase = NotesDatabase()
 
@@ -25,6 +26,7 @@ class NotesListFragment : Fragment() {
             val titleNote = arguments?.getString("title")
             val textNote = arguments?.getString("text")
             notesDatabase.addNote(Note(titleNote, textNote))
+            arguments = null
         }
 
         initDynamicList(view)
@@ -47,5 +49,17 @@ class NotesListFragment : Fragment() {
                 .commit()
             recyclerView.scrollToPosition(0)
         }
+
+        // reaction on list items clicks: open note in another fragment
+        customAdapter.setClickListener(object : OnListItemClick {
+            override fun onCLick(position: Int) {
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_fragment_container, SelectedNoteFragment.newInstance(notesDatabase.getNote(position)))
+                    .addToBackStack("")
+                    .commit()
+            }
+        })
     }
 }
