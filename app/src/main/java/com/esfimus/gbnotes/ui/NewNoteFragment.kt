@@ -13,18 +13,21 @@ class NewNoteFragment : Fragment() {
 
     private lateinit var communicator: Communicator
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_note_new, container, false)
-    }
-
     companion object {
         fun newInstance() = NewNoteFragment()
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View? {
+        return layoutInflater.inflate(R.layout.fragment_note_new, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView(view)
+    }
 
+    private fun initView(view: View) {
         val titleView = view.findViewById<TextView>(R.id.title_new)
         val textView = view.findViewById<TextView>(R.id.text_new)
 
@@ -34,6 +37,7 @@ class NewNoteFragment : Fragment() {
             val text: String = textView.text.toString()
             if (!"""\s*""".toRegex().matches(title) ||
                 !"""\s*""".toRegex().matches(text)) {
+                // sending two string variables to mainActivity via interface
                 communicator = requireActivity() as Communicator
                 communicator.passData(title, text)
             }

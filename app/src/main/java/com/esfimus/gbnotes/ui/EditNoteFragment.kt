@@ -12,7 +12,17 @@ import com.esfimus.gbnotes.domain.Note
 private const val NOTE = "note"
 
 class EditNoteFragment : Fragment() {
+
     private var note: Note? = null
+
+    companion object {
+        fun newInstance(note: Note?) =
+            EditNoteFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(NOTE, note)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,17 +36,12 @@ class EditNoteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_edit_note, container, false)
     }
 
-    companion object {
-        fun newInstance(note: Note?) =
-            EditNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(NOTE, note)
-                }
-            }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView(view)
+    }
+
+    private fun initView(view: View) {
         if (arguments != null) {
             val noteTitle = view.findViewById<TextView>(R.id.title_edit)
             val noteText = view.findViewById<TextView>(R.id.text_edit)
