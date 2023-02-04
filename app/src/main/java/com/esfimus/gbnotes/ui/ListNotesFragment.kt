@@ -1,12 +1,15 @@
 package com.esfimus.gbnotes.ui
 
 import android.app.AlertDialog
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +19,31 @@ import com.esfimus.gbnotes.domain.*
 import com.esfimus.gbnotes.domain.clicks.OnListItemClick
 import com.esfimus.gbnotes.domain.clicks.OnListItemLongClick
 import com.esfimus.gbnotes.domain.clicks.OnOptionsClick
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 class ListNotesFragment : Fragment() {
 
     private val notesDatabase = NotesDatabase()
+    private var preferences: SharedPreferences? = null
+    private val prefKey = "preferences"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // retrieving saved notes
+        preferences = activity?.getSharedPreferences("Notes to save", MODE_PRIVATE)
+        val savedNotes = preferences?.getString(prefKey, null)
+        if (savedNotes != null) {
+            try {
+                val type: Type = object : TypeToken<List<Note>>() {}.type
+                notesDatabase.addNotes(GsonBuilder().create().fromJson(savedNotes, type))
+            } catch (e: Exception) {
+                Toast.makeText(context, "Some shit happened", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
@@ -31,6 +55,8 @@ class ListNotesFragment : Fragment() {
             val textNote = arguments?.getString("text")
             notesDatabase.addNote(Note(titleNote, textNote))
             arguments = null
+            // saving notes after adding new ones
+            saveNotes()
         }
         return view
     }
@@ -38,6 +64,12 @@ class ListNotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDynamicList(view)
+    }
+
+    // saving notes after editing
+    override fun onResume() {
+        super.onResume()
+        saveNotes()
     }
 
     private fun initDynamicList(view: View) {
@@ -98,6 +130,8 @@ class ListNotesFragment : Fragment() {
                         .setPositiveButton("Yes") { _, _ ->
                             notesDatabase.deleteNote(position)
                             customAdapter.notifyItemRemoved(position)
+                            // saving notes after deletion
+                            saveNotes()
                         }
                         .show()
                     true
@@ -118,5 +152,14 @@ class ListNotesFragment : Fragment() {
             .addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
             .commit()
+    }
+
+    /**
+     * Saves list of notes
+     */
+    private fun saveNotes() {
+        val notesToSave: List<Note> = notesDatabase.getNotesList()
+        val jsonNotes = GsonBuilder().create().toJson(notesToSave)
+        preferences?.edit()?.putString(prefKey, jsonNotes)?.apply()
     }
 }

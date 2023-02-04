@@ -10,6 +10,10 @@ class NotesDatabase {
         notesList.add(0, note)
     }
 
+    fun addNotes(list: List<Note>) {
+        notesList.addAll(list)
+    }
+
     fun getNotesList() = notesList
 
     fun getNote(index: Int): Note? {
