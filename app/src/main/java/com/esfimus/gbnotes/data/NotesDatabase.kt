@@ -19,4 +19,8 @@ class NotesDatabase {
             null
         }
     }
+
+    fun deleteNote(index: Int) {
+        notesList.removeAt(index)
+    }
 }

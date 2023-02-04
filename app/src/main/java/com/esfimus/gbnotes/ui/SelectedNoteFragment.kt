@@ -13,7 +13,17 @@ import com.esfimus.gbnotes.domain.Note
 private const val NOTE = "note"
 
 class SelectedNoteFragment : Fragment() {
+
     private var note: Note? = null
+
+    companion object {
+        fun newInstance(note: Note?) =
+            SelectedNoteFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(NOTE, note)
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +37,12 @@ class SelectedNoteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_note_selected, container, false)
     }
 
-    companion object {
-        fun newInstance(note: Note?) =
-            SelectedNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(NOTE, note)
-                }
-            }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView(view)
+    }
+
+    private fun initView(view: View) {
         if (arguments != null) {
             val noteTitle = view.findViewById<TextView>(R.id.title_view)
             val noteText = view.findViewById<TextView>(R.id.text_view)
@@ -48,14 +53,21 @@ class SelectedNoteFragment : Fragment() {
 
             // FAB response: edit selected note in new fragment
             view.findViewById<View>(R.id.edit_fab).setOnClickListener {
-                requireActivity()
-                    .supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_fragment_container, EditNoteFragment.newInstance(note))
-                    .addToBackStack(null)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit()
+                openFragment(EditNoteFragment.newInstance(note))
             }
         }
+    }
+
+    /**
+     * Opens given fragment on demand
+     */
+    private fun openFragment(fragment: Fragment) {
+        requireActivity()
+            .supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.main_fragment_container, fragment)
+            .addToBackStack(null)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            .commit()
     }
 }
