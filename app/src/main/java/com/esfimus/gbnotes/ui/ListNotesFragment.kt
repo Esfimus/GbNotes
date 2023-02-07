@@ -98,6 +98,7 @@ class ListNotesFragment : Fragment() {
             }
         })
 
+        // reaction on note's options clicks: open popup menu
         customAdapter.setOptionsClickListener(object : OnOptionsClick {
             override fun onOptionsClick(position: Int, itemView: View) {
                 popupMenu(customAdapter, position, itemView)
