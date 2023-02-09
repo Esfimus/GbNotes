@@ -5,65 +5,68 @@
     android:id="@+id/note_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/small_margin"
-    app:cardCornerRadius="@dimen/normal_margin"
-    app:cardElevation="@dimen/small_margin">
+    android:layout_margin="@dimen/micro_margin"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/micro_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/card_title_field"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/zero_size"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:textSize="@dimen/normal_text_size"
+                android:layout_marginTop="@dimen/milli_margin"
+                android:layout_marginStart="@dimen/milli_margin"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:maxEms="17"
+                android:textSize="@dimen/deca_text_size"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintBottom_toTopOf="@id/card_text_field"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/card_options"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/card_text_field"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/zero_size"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:textSize="@dimen/normal_text_size"
+                android:layout_marginStart="@dimen/milli_margin"
+                android:textSize="@dimen/deca_text_size"
+                android:ellipsize="end"
                 android:singleLine="true"
-                android:maxEms="17"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintTop_toBottomOf="@id/card_title_field"
                 app:layout_constraintBottom_toTopOf="@id/card_time_field"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/card_options"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/card_time_field"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/zero_size"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/normal_margin"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/small_margin"
-                android:layout_marginBottom="@dimen/small_margin"
-                android:textSize="@dimen/small_text_size"
+                android:layout_marginStart="@dimen/milli_margin"
+                android:layout_marginBottom="@dimen/milli_margin"
+                android:textSize="@dimen/milli_text_size"
+                android:ellipsize="end"
+                android:singleLine="true"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintTop_toBottomOf="@id/card_text_field"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/card_options" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/card_options"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/normal_margin"
+                android:padding="@dimen/deca_margin"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:fontFamily="@font/roboto"
                 android:text="@string/options_dots"
                 android:textAppearance="?android:textAppearanceLarge"/>
 

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_margin">4dp</dimen>
-    <dimen name="normal_margin">16dp</dimen>
-    <dimen name="large_text_size">24sp</dimen>
-    <dimen name="normal_text_size">16sp</dimen>
-    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="micro_margin">4dp</dimen>
+    <dimen name="deca_margin">16dp</dimen>
+    <dimen name="kilo_text_size">24sp</dimen>
+    <dimen name="deca_text_size">16sp</dimen>
+    <dimen name="milli_text_size">12sp</dimen>
+    <dimen name="zero_size">0dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="milli_margin">12dp</dimen>
 </resources>
