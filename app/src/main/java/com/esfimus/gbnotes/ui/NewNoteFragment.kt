@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.domain.Communicator
+import com.esfimus.gbnotes.domain.Note
 
 class NewNoteFragment : Fragment() {
 
@@ -39,7 +40,8 @@ class NewNoteFragment : Fragment() {
                 !"""\s*""".toRegex().matches(text)) {
                 // sending two string variables to mainActivity via interface
                 communicator = requireActivity() as Communicator
-                communicator.passData(title, text)
+                val newNote = Note(title, text)
+                communicator.passData(newNote)
             }
             requireActivity().supportFragmentManager.popBackStack()
         }

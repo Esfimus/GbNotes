@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.domain.Communicator
+import com.esfimus.gbnotes.domain.Note
 
 class MainActivity : AppCompatActivity(), Communicator {
 
@@ -27,10 +28,9 @@ class MainActivity : AppCompatActivity(), Communicator {
     /**
      * Receives two string variables via interface and packs this data for fragment with notes list
      */
-    override fun passData(title: String, text: String) {
+    override fun passData(note: Note) {
         val bundle = Bundle()
-        bundle.putString("title", title)
-        bundle.putString("text", text)
+        bundle.putParcelable("note", note)
         listNotesFragment.arguments = bundle
     }
 }

@@ -3,6 +3,7 @@ package com.esfimus.gbnotes.ui
 import android.app.AlertDialog
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -45,16 +46,19 @@ class ListNotesFragment : Fragment() {
         }
     }
 
+    @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View? {
         val view = layoutInflater.inflate(R.layout.fragment_notes_list, container, false)
 
         // adding new note from arguments packed in mainActivity and received from NewNoteFragment
         if (arguments != null) {
-            val titleNote = arguments?.getString("title")
-            val textNote = arguments?.getString("text")
-            notesDatabase.addNote(Note(titleNote, textNote))
-            arguments = null
+            val newlyAddedNote = if (Build.VERSION.SDK_INT >= 33) {
+                arguments?.getParcelable("note", Note::class.java)!!
+            } else {
+                arguments?.getParcelable("note")!!
+            }
+            notesDatabase.addNote(newlyAddedNote)
             // saving notes after adding new ones
             saveNotes()
         }
