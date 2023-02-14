@@ -6,6 +6,8 @@ import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.domain.Communicator
 import com.esfimus.gbnotes.domain.Note
 
+private const val NOTE = "note"
+
 class MainActivity : AppCompatActivity(), Communicator {
 
     private lateinit var listNotesFragment: ListNotesFragment
@@ -26,11 +28,11 @@ class MainActivity : AppCompatActivity(), Communicator {
     }
 
     /**
-     * Receives two string variables via interface and packs this data for fragment with notes list
+     * Receives note object via interface and packs it for fragment with notes list
      */
     override fun passData(note: Note) {
         val bundle = Bundle()
-        bundle.putParcelable("note", note)
+        bundle.putParcelable(NOTE, note)
         listNotesFragment.arguments = bundle
     }
 }

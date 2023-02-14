@@ -11,7 +11,8 @@ import com.esfimus.gbnotes.domain.clicks.OnListItemClick
 import com.esfimus.gbnotes.domain.clicks.OnListItemLongClick
 import com.esfimus.gbnotes.domain.clicks.OnOptionsClick
 
-class RecyclerAdapter(private val itemsList: MutableList<Note>) : RecyclerView.Adapter<RecyclerAdapter.CustomViewHolder>() {
+class RecyclerAdapter(private val itemsList: MutableList<Note>) :
+    RecyclerView.Adapter<RecyclerAdapter.CustomViewHolder>() {
 
     private var itemClickListener: OnListItemClick? = null
     private var itemLongClickListener: OnListItemLongClick? = null

@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDateTime
 
-class Note(private var title: String?, private var text: String?) : Parcelable {
+data class Note(private var title: String?, private var text: String?) : Parcelable {
 
     private var date: String
 
@@ -43,9 +43,7 @@ class Note(private var title: String?, private var text: String?) : Parcelable {
         date = parcel.readString().toString()
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<Note> {
         override fun createFromParcel(parcel: Parcel): Note {

@@ -24,18 +24,21 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
+private const val PREF_KEY = "preferences"
+private const val SAVED_NOTES = "saved notes"
+private const val NOTE = "note"
+
 class ListNotesFragment : Fragment() {
 
     private val notesDatabase = NotesDatabase()
     private var preferences: SharedPreferences? = null
-    private val prefKey = "preferences"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // retrieving saved notes
-        preferences = activity?.getSharedPreferences("Notes to save", MODE_PRIVATE)
-        val savedNotes = preferences?.getString(prefKey, null)
+        preferences = activity?.getSharedPreferences(SAVED_NOTES, MODE_PRIVATE)
+        val savedNotes = preferences?.getString(PREF_KEY, null)
         if (savedNotes != null) {
             try {
                 val type: Type = object : TypeToken<List<Note>>() {}.type
@@ -54,9 +57,9 @@ class ListNotesFragment : Fragment() {
         // adding new note from arguments packed in mainActivity and received from NewNoteFragment
         if (arguments != null) {
             val newlyAddedNote = if (Build.VERSION.SDK_INT >= 33) {
-                arguments?.getParcelable("note", Note::class.java)!!
+                arguments?.getParcelable(NOTE, Note::class.java)!!
             } else {
-                arguments?.getParcelable("note")!!
+                arguments?.getParcelable(NOTE)!!
             }
             notesDatabase.addNote(newlyAddedNote)
             // saving notes after adding new ones
@@ -68,12 +71,6 @@ class ListNotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initDynamicList(view)
-    }
-
-    // saving notes after editing
-    override fun onResume() {
-        super.onResume()
-        saveNotes()
     }
 
     private fun initDynamicList(view: View) {
@@ -165,6 +162,6 @@ class ListNotesFragment : Fragment() {
     private fun saveNotes() {
         val notesToSave: List<Note> = notesDatabase.getNotesList()
         val jsonNotes = GsonBuilder().create().toJson(notesToSave)
-        preferences?.edit()?.putString(prefKey, jsonNotes)?.apply()
+        preferences?.edit()?.putString(PREF_KEY, jsonNotes)?.apply()
     }
 }

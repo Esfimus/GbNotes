@@ -17,14 +17,12 @@ class SelectedNoteFragment : Fragment() {
     private var note: Note? = null
 
     companion object {
-        fun newInstance(note: Note?) =
-            SelectedNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(NOTE, note)
-                }
+        fun newInstance(note: Note?) = SelectedNoteFragment().apply {
+                arguments = Bundle().apply { putParcelable(NOTE, note) }
             }
     }
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
