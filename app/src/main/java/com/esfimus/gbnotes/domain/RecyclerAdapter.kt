@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbnotes.R
+import com.esfimus.gbnotes.data.Note
 import com.esfimus.gbnotes.domain.clicks.OnListItemClick
 import com.esfimus.gbnotes.domain.clicks.OnListItemLongClick
 import com.esfimus.gbnotes.domain.clicks.OnOptionsClick

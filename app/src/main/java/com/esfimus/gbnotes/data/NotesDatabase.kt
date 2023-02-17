@@ -1,7 +1,5 @@
 package com.esfimus.gbnotes.data
 
-import com.esfimus.gbnotes.domain.Note
-
 class NotesDatabase {
 
     private val notesList = mutableListOf<Note>()

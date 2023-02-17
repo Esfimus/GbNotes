@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.esfimus.gbnotes.R
-import com.esfimus.gbnotes.domain.Note
+import com.esfimus.gbnotes.data.Note
+import com.esfimus.gbnotes.databinding.FragmentEditNoteBinding
 
 private const val NOTE = "note"
 
 class EditNoteFragment : Fragment() {
 
     private var note: Note? = null
+    private var bindingNullable: FragmentEditNoteBinding? = null
+    private val binding get() = bindingNullable!!
 
     companion object {
         fun newInstance(note: Note?) =
@@ -33,26 +35,27 @@ class EditNoteFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_edit_note, container, false)
+        savedInstanceState: Bundle?): View {
+        bindingNullable = FragmentEditNoteBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(view)
+        initView()
     }
 
-    private fun initView(view: View) {
+    private fun initView() {
+        val noteTitle: TextView = binding.titleEdit
+        val noteText: TextView = binding.textEdit
+        val noteDate: TextView = binding.dateEdit
         if (arguments != null) {
-            val noteTitle = view.findViewById<TextView>(R.id.title_edit)
-            val noteText = view.findViewById<TextView>(R.id.text_edit)
-            val noteDate = view.findViewById<TextView>(R.id.date_edit)
             noteTitle.text = note?.getTitle()
             noteText.text = note?.getText()
             noteDate.text = note?.getDate()
 
             // FAB response: saving edited note
-            view.findViewById<View>(R.id.edit_save_fab).setOnClickListener {
+            binding.editSaveFab.setOnClickListener {
                 note?.setTitle(noteTitle.text.toString())
                 note?.setText(noteText.text.toString())
                 requireActivity().supportFragmentManager.popBackStack()

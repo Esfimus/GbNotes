@@ -4,17 +4,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.domain.Communicator
-import com.esfimus.gbnotes.domain.Note
+import com.esfimus.gbnotes.data.Note
+import com.esfimus.gbnotes.databinding.ActivityMainBinding
 
 private const val NOTE = "note"
 
 class MainActivity : AppCompatActivity(), Communicator {
 
     private lateinit var listNotesFragment: ListNotesFragment
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         listNotesFragment = ListNotesFragment()
         initNotesList()

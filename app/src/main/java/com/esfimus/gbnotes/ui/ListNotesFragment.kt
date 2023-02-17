@@ -15,7 +15,9 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbnotes.R
+import com.esfimus.gbnotes.data.Note
 import com.esfimus.gbnotes.data.NotesDatabase
+import com.esfimus.gbnotes.databinding.FragmentNotesListBinding
 import com.esfimus.gbnotes.domain.*
 import com.esfimus.gbnotes.domain.clicks.OnListItemClick
 import com.esfimus.gbnotes.domain.clicks.OnListItemLongClick
@@ -32,6 +34,8 @@ class ListNotesFragment : Fragment() {
 
     private val notesDatabase = NotesDatabase()
     private var preferences: SharedPreferences? = null
+    private var bindingNullable: FragmentNotesListBinding? = null
+    private val binding get() = bindingNullable!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +55,8 @@ class ListNotesFragment : Fragment() {
 
     @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = layoutInflater.inflate(R.layout.fragment_notes_list, container, false)
+                              savedInstanceState: Bundle?): View {
+        bindingNullable = FragmentNotesListBinding.inflate(inflater, container, false)
 
         // adding new note from arguments packed in mainActivity and received from NewNoteFragment
         if (arguments != null) {
@@ -64,24 +68,25 @@ class ListNotesFragment : Fragment() {
             notesDatabase.addNote(newlyAddedNote)
             // saving notes after adding new ones
             saveNotes()
+            arguments = null
         }
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDynamicList(view)
+        initDynamicList()
     }
 
-    private fun initDynamicList(view: View) {
+    private fun initDynamicList() {
         // creating dynamic list of items
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycler)
+        val recyclerView: RecyclerView = binding.recycler
         val customAdapter = RecyclerAdapter(notesDatabase.getNotesList())
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = customAdapter
 
         // FAB response: opening new fragment to create new note
-        view.findViewById<View>(R.id.add_fab).setOnClickListener {
+        binding.addFab.setOnClickListener {
             openFragment(NewNoteFragment.newInstance())
         }
 
@@ -163,5 +168,15 @@ class ListNotesFragment : Fragment() {
         val notesToSave: List<Note> = notesDatabase.getNotesList()
         val jsonNotes = GsonBuilder().create().toJson(notesToSave)
         preferences?.edit()?.putString(PREF_KEY, jsonNotes)?.apply()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        saveNotes()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bindingNullable = null
     }
 }

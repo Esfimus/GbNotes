@@ -1,4 +1,4 @@
-package com.esfimus.gbnotes.domain
+package com.esfimus.gbnotes.data
 
 import android.os.Parcel
 import android.os.Parcelable

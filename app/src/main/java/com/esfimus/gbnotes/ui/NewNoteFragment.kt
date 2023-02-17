@@ -5,35 +5,37 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.domain.Communicator
-import com.esfimus.gbnotes.domain.Note
+import com.esfimus.gbnotes.data.Note
+import com.esfimus.gbnotes.databinding.FragmentNoteNewBinding
 
 class NewNoteFragment : Fragment() {
 
     private lateinit var communicator: Communicator
+    private var bindingNullable: FragmentNoteNewBinding? = null
+    private val binding get() = bindingNullable!!
 
     companion object {
         fun newInstance() = NewNoteFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
-        return layoutInflater.inflate(R.layout.fragment_note_new, container, false)
+        savedInstanceState: Bundle?): View {
+        bindingNullable = FragmentNoteNewBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView(view)
+        initView()
     }
 
-    private fun initView(view: View) {
-        val titleView = view.findViewById<TextView>(R.id.title_new)
-        val textView = view.findViewById<TextView>(R.id.text_new)
+    private fun initView() {
+        val titleView = binding.titleNew
+        val textView = binding.textNew
 
         // FAB response: creating new note
-        view.findViewById<View>(R.id.save_fab).setOnClickListener {
+        binding.saveFab.setOnClickListener {
             val title: String = titleView.text.toString()
             val text: String = textView.text.toString()
             if (!"""\s*""".toRegex().matches(title) ||
@@ -45,5 +47,10 @@ class NewNoteFragment : Fragment() {
             }
             requireActivity().supportFragmentManager.popBackStack()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bindingNullable = null
     }
 }
