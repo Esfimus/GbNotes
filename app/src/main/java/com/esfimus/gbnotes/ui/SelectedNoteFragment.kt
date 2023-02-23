@@ -45,12 +45,9 @@ class SelectedNoteFragment : Fragment() {
 
     private fun initView() {
         if (arguments != null) {
-            val noteTitle = binding.titleView
-            val noteText = binding.textView
-            val noteDate = binding.dateView
-            noteTitle.text = note?.getTitle()
-            noteText.text = note?.getText()
-            noteDate.text = note?.getDate()
+            binding.titleView.text = note?.getTitle()
+            binding.textView.text = note?.getText()
+            binding.dateView.text = note?.getDate()
 
             // FAB response: edit selected note in new fragment
             binding.editFab.setOnClickListener {

@@ -20,18 +20,14 @@ class EditNoteFragment : Fragment() {
     companion object {
         fun newInstance(note: Note?) =
             EditNoteFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(NOTE, note)
-                }
+                arguments = Bundle().apply { putParcelable(NOTE, note) }
             }
     }
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            note = it.getParcelable(NOTE)
-        }
+        arguments?.let { note = it.getParcelable(NOTE) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,8 +52,10 @@ class EditNoteFragment : Fragment() {
 
             // FAB response: saving edited note
             binding.editSaveFab.setOnClickListener {
-                note?.setTitle(noteTitle.text.toString())
-                note?.setText(noteText.text.toString())
+                note?.run {
+                    setTitle(noteTitle.text.toString())
+                    setText(noteText.text.toString())
+                }
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }

@@ -13,7 +13,6 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.esfimus.gbnotes.R
 import com.esfimus.gbnotes.data.Note
 import com.esfimus.gbnotes.data.NotesDatabase
@@ -80,10 +79,11 @@ class ListNotesFragment : Fragment() {
 
     private fun initDynamicList() {
         // creating dynamic list of items
-        val recyclerView: RecyclerView = binding.recycler
         val customAdapter = RecyclerAdapter(notesDatabase.getNotesList())
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = customAdapter
+        binding.recycler.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = customAdapter
+        }
 
         // FAB response: opening new fragment to create new note
         binding.addFab.setOnClickListener {
@@ -116,34 +116,35 @@ class ListNotesFragment : Fragment() {
      * Creates popup menu for each selected view in list
      */
     private fun popupMenu(customAdapter: RecyclerAdapter, position: Int, itemView: View) {
-        val popupMenu = PopupMenu(context, itemView)
-        popupMenu.inflate(R.menu.popup_menu)
-        popupMenu.show()
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.edit_popup -> {
-                    openFragment(EditNoteFragment.newInstance(notesDatabase.getNote(position)))
-                    true
+        PopupMenu(context, itemView).apply {
+            inflate(R.menu.popup_menu)
+            show()
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit_popup -> {
+                        openFragment(EditNoteFragment.newInstance(notesDatabase.getNote(position)))
+                        true
+                    }
+                    R.id.delete_popup -> {
+                        // building alert dialog before deletion
+                        AlertDialog.Builder(context)
+                            .setTitle("Confirm delete")
+                            .setMessage("Are you sure you want to delete this note?")
+                            .setCancelable(true)
+                            .setNegativeButton("No") {
+                                    dialog, _ -> dialog.cancel()
+                            }
+                            .setPositiveButton("Yes") { _, _ ->
+                                notesDatabase.deleteNote(position)
+                                customAdapter.notifyItemRemoved(position)
+                                // saving notes after deletion
+                                saveNotes()
+                            }
+                            .show()
+                        true
+                    }
+                    else -> false
                 }
-                R.id.delete_popup -> {
-                    // building alert dialog before deletion
-                    AlertDialog.Builder(context)
-                        .setTitle("Confirm delete")
-                        .setMessage("Are you sure you want to delete this note?")
-                        .setCancelable(true)
-                        .setNegativeButton("No") {
-                                dialog, _ -> dialog.cancel()
-                        }
-                        .setPositiveButton("Yes") { _, _ ->
-                            notesDatabase.deleteNote(position)
-                            customAdapter.notifyItemRemoved(position)
-                            // saving notes after deletion
-                            saveNotes()
-                        }
-                        .show()
-                    true
-                }
-                else -> false
             }
         }
     }

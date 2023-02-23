@@ -51,9 +51,11 @@ class RecyclerAdapter(private val itemsList: MutableList<Note>) :
     override fun getItemCount() = itemsList.size
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.titleView.text = itemsList[position].getTitle()
-        holder.textView.text = itemsList[position].getText()
-        holder.timeView.text = itemsList[position].getDate()
+        with (holder) {
+            titleView.text = itemsList[position].getTitle()
+            textView.text = itemsList[position].getText()
+            timeView.text = itemsList[position].getDate()
+        }
     }
 
     /**
