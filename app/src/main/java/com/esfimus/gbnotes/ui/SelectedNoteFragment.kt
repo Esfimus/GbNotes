@@ -15,8 +15,8 @@ private const val NOTE = "note"
 class SelectedNoteFragment : Fragment() {
 
     private var note: Note? = null
-    private var bindingNullable: FragmentNoteSelectedBinding? = null
-    private val binding get() = bindingNullable!!
+    private var _ui: FragmentNoteSelectedBinding? = null
+    private val ui get() = _ui!!
 
     companion object {
         fun newInstance(note: Note?) = SelectedNoteFragment().apply {
@@ -34,8 +34,8 @@ class SelectedNoteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        bindingNullable = FragmentNoteSelectedBinding.inflate(inflater, container, false)
-        return binding.root
+        _ui = FragmentNoteSelectedBinding.inflate(inflater, container, false)
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,12 +45,12 @@ class SelectedNoteFragment : Fragment() {
 
     private fun initView() {
         if (arguments != null) {
-            binding.titleView.text = note?.getTitle()
-            binding.textView.text = note?.getText()
-            binding.dateView.text = note?.getDate()
+            ui.titleView.text = note?.getTitle()
+            ui.textView.text = note?.getText()
+            ui.dateView.text = note?.getDate()
 
             // FAB response: edit selected note in new fragment
-            binding.editFab.setOnClickListener {
+            ui.editFab.setOnClickListener {
                 openFragment(EditNoteFragment.newInstance(note))
             }
         }
@@ -69,8 +69,8 @@ class SelectedNoteFragment : Fragment() {
             .commit()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bindingNullable = null
+    override fun onDestroyView() {
+        _ui = null
+        super.onDestroyView()
     }
 }

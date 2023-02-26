@@ -33,8 +33,8 @@ class ListNotesFragment : Fragment() {
 
     private val notesDatabase = NotesDatabase()
     private var preferences: SharedPreferences? = null
-    private var bindingNullable: FragmentNotesListBinding? = null
-    private val binding get() = bindingNullable!!
+    private var _ui: FragmentNotesListBinding? = null
+    private val ui get() = _ui!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class ListNotesFragment : Fragment() {
     @Suppress("DEPRECATION")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        bindingNullable = FragmentNotesListBinding.inflate(inflater, container, false)
+        _ui = FragmentNotesListBinding.inflate(inflater, container, false)
 
         // adding new note from arguments packed in mainActivity and received from NewNoteFragment
         if (arguments != null) {
@@ -69,7 +69,7 @@ class ListNotesFragment : Fragment() {
             saveNotes()
             arguments = null
         }
-        return binding.root
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,13 +80,13 @@ class ListNotesFragment : Fragment() {
     private fun initDynamicList() {
         // creating dynamic list of items
         val customAdapter = RecyclerAdapter(notesDatabase.getNotesList())
-        binding.recycler.apply {
+        ui.recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = customAdapter
         }
 
         // FAB response: opening new fragment to create new note
-        binding.addFab.setOnClickListener {
+        ui.addFab.setOnClickListener {
             openFragment(NewNoteFragment.newInstance())
         }
 
@@ -176,8 +176,8 @@ class ListNotesFragment : Fragment() {
         saveNotes()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bindingNullable = null
+    override fun onDestroyView() {
+        _ui = null
+        super.onDestroyView()
     }
 }

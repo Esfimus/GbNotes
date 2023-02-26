@@ -12,8 +12,8 @@ import com.esfimus.gbnotes.databinding.FragmentNoteNewBinding
 class NewNoteFragment : Fragment() {
 
     private lateinit var communicator: Communicator
-    private var bindingNullable: FragmentNoteNewBinding? = null
-    private val binding get() = bindingNullable!!
+    private var _ui: FragmentNoteNewBinding? = null
+    private val ui get() = _ui!!
 
     companion object {
         fun newInstance() = NewNoteFragment()
@@ -21,8 +21,8 @@ class NewNoteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        bindingNullable = FragmentNoteNewBinding.inflate(inflater, container, false)
-        return binding.root
+        _ui = FragmentNoteNewBinding.inflate(inflater, container, false)
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,11 +31,11 @@ class NewNoteFragment : Fragment() {
     }
 
     private fun initView() {
-        val titleView = binding.titleNew
-        val textView = binding.textNew
+        val titleView = ui.titleNew
+        val textView = ui.textNew
 
         // FAB response: creating new note
-        binding.saveFab.setOnClickListener {
+        ui.saveFab.setOnClickListener {
             val title: String = titleView.text.toString()
             val text: String = textView.text.toString()
             if (!"""\s*""".toRegex().matches(title) ||
@@ -49,8 +49,8 @@ class NewNoteFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        bindingNullable = null
+    override fun onDestroyView() {
+        _ui = null
+        super.onDestroyView()
     }
 }

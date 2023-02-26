@@ -14,8 +14,8 @@ private const val NOTE = "note"
 class EditNoteFragment : Fragment() {
 
     private var note: Note? = null
-    private var bindingNullable: FragmentEditNoteBinding? = null
-    private val binding get() = bindingNullable!!
+    private var _ui: FragmentEditNoteBinding? = null
+    private val ui get() = _ui!!
 
     companion object {
         fun newInstance(note: Note?) =
@@ -32,8 +32,8 @@ class EditNoteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
-        bindingNullable = FragmentEditNoteBinding.inflate(inflater, container, false)
-        return binding.root
+        _ui = FragmentEditNoteBinding.inflate(inflater, container, false)
+        return ui.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,16 +42,16 @@ class EditNoteFragment : Fragment() {
     }
 
     private fun initView() {
-        val noteTitle: TextView = binding.titleEdit
-        val noteText: TextView = binding.textEdit
-        val noteDate: TextView = binding.dateEdit
+        val noteTitle: TextView = ui.titleEdit
+        val noteText: TextView = ui.textEdit
+        val noteDate: TextView = ui.dateEdit
         if (arguments != null) {
             noteTitle.text = note?.getTitle()
             noteText.text = note?.getText()
             noteDate.text = note?.getDate()
 
             // FAB response: saving edited note
-            binding.editSaveFab.setOnClickListener {
+            ui.editSaveFab.setOnClickListener {
                 note?.run {
                     setTitle(noteTitle.text.toString())
                     setText(noteText.text.toString())
@@ -59,5 +59,10 @@ class EditNoteFragment : Fragment() {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        _ui = null
+        super.onDestroyView()
     }
 }
